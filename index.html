@@ -6,15 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Map Prototype</title>
     <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 </head>
 <body>
-    <input
-      id="pac-input"
-      class="controls"
-      type="text"
-      placeholder="Search Box"
-    />
     <div id="map"></div>
+    <div class="side-menu">
+      <div class="controls">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input
+        id="pac-input"
+        type="text"
+        placeholder="Search Location..."/>
+      </div>
+    </div>
     <script src="./script.js"></script>
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPgnsHFiy7NgRffP9HB0ZOmIKJ18DgEZQ&callback=initMap&libraries=places"
