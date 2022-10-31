@@ -1,3 +1,15 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+}
+
+body{
+    font-family: 'Montserrat', sans-serif;
+}
+
 #map{
     height:590px;
     width:100%;
@@ -5,20 +17,23 @@
 
 #pac-input{
     border: none;
-    height: 20px;
-    width: 245px;
-    border-radius: 24px;
+    height: 16px;
+    width: 150px;
     text-overflow: ellipsis;
-    margin-left: 25px;
+    margin-left: 30px;
 }
+
+#pac-input:focus {
+    outline: none;
+  }
 
 
 .controls{
-    margin-top: 62px;
+    margin-top: 80px;
     margin-left: 25px;
     background-color: #fff;
     height: 22px;
-    width: 270px;
+    width: 200px;
     border-radius: 24px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
@@ -26,18 +41,43 @@
 .controls i{
     color: #4356FF;
     position: absolute;
-    margin-left: 5px;
     margin-top: 3px;
 }
 
 .side-menu{
     position: absolute;
-    width: 320px;
+    width: 250px;
     height: 500px;
     left: 25px;
     top: 62px;
     background: #4356FF;
     box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.25);
     border-radius: 24px;
+    text-align: center;
+}
+
+nav{
+    margin-top: 50px;
+    margin-right: 10px;
+    position: relative;
+}
+
+nav ul{
+    display: inline-block; 
+	text-align: left;
+    font-size: small;
+}
+
+nav ul li{
+    padding: 20px;
+}
+
+nav ul li a{
+    color: #fff;
+    display: block;
+}
+
+nav ul li a .fa-solid{
+    width: 25px;
 }
 

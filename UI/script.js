@@ -3,6 +3,7 @@ function initMap(){
     var options = {
         zoom: 8,
         center:{lat:42.3601, lng:-71.0589},
+        //style map(may add night mode sometime)
         styles: [
           {
             elementType: "geometry",
