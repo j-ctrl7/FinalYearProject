@@ -1,5 +1,24 @@
 //function to view the map
 function initMap(){
+   
+    var lngCoord;
+    var latCoord;/*
+    navigator.geolocation.getCurrentPosition(
+      lngCoord = position.coords.longitude,
+      latCoord = position.coords.latitude,
+    )
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position)=>{
+        lngCoord = position.coords.longitude,
+        latCoord = position.coords.latitude,
+      },
+      )
+    } else {
+      //alert("Geolocation is not supported by this browser.");
+      lngCoord = 42.3601;
+      latCoord = -71.0589;
+    }*/
     var options = {
         zoom: 8,
         center:{lat:42.3601, lng:-71.0589},
