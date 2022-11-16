@@ -1,133 +1,52 @@
 //function to view the map
+let infoWindow, map;
 function initMap(){
-   
-    var lngCoord;
-    var latCoord;/*
+   var options = {
+    zoom: 15,
+    center:{ lat: -33.8688, lng: 151.2195 },
+    styles: setStyle("lightMode"),
+    //style map(may add night mode sometime)
+    disableDefaultUI: true,
+  }
+  map = new google.maps.Map(document.getElementById('map'), options);
+  initAutocomplete(map);
+  infoWindow = new google.maps.InfoWindow();
+
+   //add tags
+   google.maps.event.addListener(map, 'click', 
+   function(event){
+    addMarker({coords: event.latLng})
+   });
+
+   //get user current location
+   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
-      lngCoord = position.coords.longitude,
-      latCoord = position.coords.latitude,
-    )
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position)=>{
-        lngCoord = position.coords.longitude,
-        latCoord = position.coords.latitude,
+      (position) => {
+        const pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        map.setCenter(pos);
+        
+        //marker for current user location
+        new google.maps.Marker({
+          position: pos,
+          map,
+        });
       },
-      )
-    } else {
-      //alert("Geolocation is not supported by this browser.");
-      lngCoord = 42.3601;
-      latCoord = -71.0589;
-    }*/
-    var options = {
-        zoom: 8,
-        center:{lat:42.3601, lng:-71.0589},
-        //style map(may add night mode sometime)
-        styles: [
-          {
-            elementType: "geometry",
-            stylers: [{ color: "#f5f5f5" }],
-          },
-          {
-            elementType: "labels.icon",
-            stylers: [{ visibility: "off" }],
-          },
-          {
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#616161" }],
-          },
-          {
-            elementType: "labels.text.stroke",
-            stylers: [{ color: "#f5f5f5" }],
-          },
-          {
-            featureType: "administrative.land_parcel",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#bdbdbd" }],
-          },
-          {
-            featureType: "poi",
-            elementType: "geometry",
-            stylers: [{ color: "#eeeeee" }],
-          },
-          {
-            featureType: "poi",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#757575" }],
-          },
-          {
-            featureType: "poi.park",
-            elementType: "geometry",
-            stylers: [{ color: "#e5e5e5" }],
-          },
-          {
-            featureType: "poi.park",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#9e9e9e" }],
-          },
-          {
-            featureType: "road",
-            elementType: "geometry",
-            stylers: [{ color: "#ffffff" }],
-          },
-          {
-            featureType: "road.arterial",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#757575" }],
-          },
-          {
-            featureType: "road.highway",
-            elementType: "geometry",
-            stylers: [{ color: "#dadada" }],
-          },
-          {
-            featureType: "road.highway",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#616161" }],
-          },
-          {
-            featureType: "road.local",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#9e9e9e" }],
-          },
-          {
-            featureType: "transit.line",
-            elementType: "geometry",
-            stylers: [{ color: "#e5e5e5" }],
-          },
-          {
-            featureType: "transit.station",
-            elementType: "geometry",
-            stylers: [{ color: "#eeeeee" }],
-          },
-          {
-            featureType: "water",
-            elementType: "geometry",
-            stylers: [{ color: "#c9c9c9" }],
-          },
-          {
-            featureType: "water",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#9e9e9e" }],
-          },
-        ],
-        disableDefaultUI: true,
-    }
+      () => {
+        handleLocationError(true, infoWindow, map.getCenter());
+      }
+    );
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
 
-    
-
-    const map = new google.maps.Map(document.getElementById('map'), options);
-
-    initAutocomplete(map);
 }
 
-//function for searchbox
+//function for searchbox and search autocomplete
 function initAutocomplete(map) {
-    //const map = new google.maps.Map(document.getElementById("map"), {
-      //center: { lat: -33.8688, lng: 151.2195 },
-      //zoom: 13,
-      //mapTypeId: "roadmap",
-    //});
     // Create the search box and link it to the UI element.
     const input = document.getElementById("pac-input");
     const searchBox = new google.maps.places.SearchBox(input);
@@ -192,6 +111,121 @@ function initAutocomplete(map) {
     });
   }
 
-  
+  //checks if geolocation is enabled for a user
+  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    initAutocomplete(map);
+    map.setZoom(2);
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(
+      browserHasGeolocation
+        ? "Error: The Geolocation service failed."
+        : "Error: Your browser doesn't support geolocation."
+    );
+    infoWindow.open(map);
+  }
+
+function addMarker(props){
+  var marker = new google.maps.Marker({
+    position: props.coords,
+    map,
+  });
+}
+
+
+//customize the style of the map
+function setStyle(type){
+  let lightMode = [
+    {
+      elementType: "geometry",
+      stylers: [{ color: "#f5f5f5" }],
+    },
+    /*{
+      elementType: "labels.icon",
+      stylers: [{ visibility: "off" }],
+    },*/
+    {
+      elementType: "labels.text.fill",
+      stylers: [{ color: "#616161" }],
+    },
+    {
+      elementType: "labels.text.stroke",
+      stylers: [{ color: "#f5f5f5" }],
+    },
+    {
+      featureType: "administrative.land_parcel",
+      elementType: "labels.text.fill",
+      stylers: [{ color: "#bdbdbd" }],
+    },
+    {
+      featureType: "poi",
+      elementType: "geometry",
+      stylers: [{ color: "#eeeeee" }],
+    },
+    {
+      featureType: "poi",
+      elementType: "labels.text.fill",
+      stylers: [{ color: "#757575" }],
+    },
+    {
+      featureType: "poi.park",
+      elementType: "geometry",
+      stylers: [{ color: "#e5e5e5" }],
+    },
+    {
+      featureType: "poi.park",
+      elementType: "labels.text.fill",
+      stylers: [{ color: "#9e9e9e" }],
+    },
+    {
+      featureType: "road",
+      elementType: "geometry",
+      stylers: [{ color: "#ffffff" }],
+    },
+    {
+      featureType: "road.arterial",
+      elementType: "labels.text.fill",
+      stylers: [{ color: "#757575" }],
+    },
+    {
+      featureType: "road.highway",
+      elementType: "geometry",
+      stylers: [{ color: "#dadada" }],
+    },
+    {
+      featureType: "road.highway",
+      elementType: "labels.text.fill",
+      stylers: [{ color: "#616161" }],
+    },
+    {
+      featureType: "road.local",
+      elementType: "labels.text.fill",
+      stylers: [{ color: "#9e9e9e" }],
+    },
+    {
+      featureType: "transit.line",
+      elementType: "geometry",
+      stylers: [{ color: "#e5e5e5" }],
+    },
+    {
+      featureType: "transit.station",
+      elementType: "geometry",
+      stylers: [{ color: "#eeeeee" }],
+    },
+    {
+      featureType: "water",
+      elementType: "geometry",
+      stylers: [{ color: "#c9c9c9" }],
+    },
+    {
+      featureType: "water",
+      elementType: "labels.text.fill",
+      stylers: [{ color: "#9e9e9e" }],
+    },
+  ]
+  if (type == "lightMode"){
+    return lightMode;
+  }
+}
+
   window.initMap = initMap;
   

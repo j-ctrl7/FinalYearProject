@@ -1,4 +1,4 @@
-/*Main Page*/
+/*--------------------Main Page----------------------*/
 *{
     margin: 0;
     padding: 0;
@@ -9,11 +9,12 @@
 
 body{
     font-family: 'Montserrat', sans-serif;
+    display: flex;
 }
 
 #map{
-    height:600px;
-    width:100%;
+    height:100vh;
+    width:100vw;
 }
 
 #pac-input{
@@ -134,17 +135,130 @@ nav ul li a .fa-solid{
 }
 
 
-/*Login Page*/
+/*---------------------------Login Page-------------------------------*/
 h1{
     font-family: 'Montserrat', sans-serif;
 }
-#login-area{
-    position: absolute;
+
+.login-body{
+    margin: 0;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    background-size: cover;
+}
+
+.login-area{
     width: 600px;
-    height: 400px;
-    left: 308px;
-    top: 100px;
+    max-width: 600px;
+    margin: 1rem;
+    padding: 2rem;
     background: #4356FF;
     box-shadow: 7px 7px 14px rgba(0, 0, 0, 0.25);
     border-radius: 24px
+}
+
+.form--hidden{
+    display: none;
+}
+
+.form__title{
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #fff;
+}
+
+.form__message{
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.form__message--success{
+    color: #4bb544;
+}
+
+.form__message--error{
+    color: #cc3333;
+}
+
+.form__input-group{
+    margin-bottom: 1rem;
+} 
+
+.form__input{
+    display:block;
+    width: 100%;
+    padding: 0.75rem;
+    box-sizing: border-box;
+    border-radius: 24px;
+    border: 2px solid #eeeeee;
+    outline: none;
+    background: #eeeeee;
+    transition: background 300ms, border-color 300ms;
+}
+
+.form__input:focus{
+    border-color: #001eb7 ;
+    background: #fff;
+}
+
+.form__input--error{
+    color: #cc3333;
+    border-color: #cc3333;
+}
+
+.form__input-error-message{
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #cc3333;
+}
+
+.form__button{
+    width: 100%;
+    padding: 1rem 2rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #fff;
+    border: none;
+    border-radius: 24px;
+    outline: none;
+    cursor: pointer;
+    background: #001eb7;
+    transition: all 300ms ease-in-out;
+}
+
+.form__button:hover{
+    background-color: #fff;
+    color: #001eb7;
+    font-size: 1.105rem;
+}
+
+.form__button:active{
+    transform: scale(0.98);
+    background-color: darkgray;
+    color: #808080;
+    font-size: 1.1rem;
+}
+
+.form__text{
+    text-align: right;
+    margin-bottom: 1rem;
+    font-size: small;
+}
+
+.form__text--signUp{
+    text-align: center;
+    margin-top: 1rem;
+    font-size: small;
+}
+
+.form__link{
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.form__link:hover{
+    text-decoration: underline;
 }
