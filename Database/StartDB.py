@@ -18,6 +18,7 @@ def create_connection(db_name):
         conn = mysql.connector.connect(user='root', password='CapStone_2023',
                                       host='127.0.0.1',
                                       database=db_name)
+        return conn
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print("Something is wrong with your user name or password")
@@ -25,23 +26,43 @@ def create_connection(db_name):
             print("Database does not exist")
         else:
             print(err)
-    return conn
 
 #Creating user Table
-def create_userdata_table(conn):
-    Table_string = """ CREATE TABLE USERS (
+def create_table(conn, name):
+    Table_string = """ CREATE TABLE {table} (
                                         username char(35) NOT NULL,
                                         password char(35) NOT NULL
                                     ); """
     try:
         cursor = conn.cursor()
-        cursor.execute(Table_string)
-    except Error as e:
-        print(e)
+        cursor.execute(Table_string.format(table=name))
+        cursor.close()
+    except mysql.connector.Error as err:
+        print(err)
+
+#Adding to a table
+def addUser(conn, username, password):
+    userInfo=(username,password)
+    adduser=("INSERT INTO users"
+            "(username, password)"
+            "VALUES (%s,%s)")
+    try:
+        cursor=conn.cursor()
+        cursor.execute(adduser,userInfo)
+        conn.commit()
+        cursor.close()
+    except mysql.connector.Error as err:
+        print(err)
 
 def main():
     conn = create_connection("user_db")
-    create_userdata_table(conn)
+    create_table(conn, "Test")
+    #addUser(conn,"joseph", "joestar")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM USERS")
+    result = cursor.fetchall()
+    cursor.close()
+    print(result)
 
 if __name__ == "__main__":
     main()
