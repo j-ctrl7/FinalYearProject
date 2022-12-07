@@ -38,15 +38,31 @@ def create_userdata_table(conn, username):
     try:
         cursor = conn.cursor()
         cursor.execute(Table_string)
+        cursor.close()
+    except mysql.connector.Error as err:
+        print(err)
+
+#Adding to a table
+def addUser(conn, username, password):
+    userInfo=(username,password)
+    adduser=("INSERT INTO users"
+            "(username, password)"
+            "VALUES (%s,%s)")
+    try:
+        cursor=conn.cursor()
+        cursor.execute(adduser,userInfo)
+        conn.commit()
+        cursor.close()
     except mysql.connector.Error as err:
         print(err)
 
 def main():
     conn = create_connection("user_db")
-    create_userdata_table(conn,"STYLE_POINTS")
+    addUser(conn,"joseph", "joestar")
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM USERS")
     result = cursor.fetchall()
+    cursor.close()
     print(result)
 
 if __name__ == "__main__":
