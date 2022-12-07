@@ -28,16 +28,14 @@ def create_connection(db_name):
             print(err)
 
 #Creating user Table
-def create_userdata_table(conn, username):
-    #Creates a Table for the user as long as the username doesn't already exist
-    Table_string = """ CREATE TABLE IF NOT EXISTS STYLE_POINTS (
+def create_table(conn, name):
+    Table_string = """ CREATE TABLE {table} (
                                         username char(35) NOT NULL,
-                                        password char(35) NOT NULL,
-                                        email char(35) NOT NULL,
+                                        password char(35) NOT NULL
                                     ); """
     try:
         cursor = conn.cursor()
-        cursor.execute(Table_string)
+        cursor.execute(Table_string.format(table=name))
         cursor.close()
     except mysql.connector.Error as err:
         print(err)
@@ -58,7 +56,8 @@ def addUser(conn, username, password):
 
 def main():
     conn = create_connection("user_db")
-    addUser(conn,"joseph", "joestar")
+    create_table(conn, "Test")
+    #addUser(conn,"joseph", "joestar")
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM USERS")
     result = cursor.fetchall()
