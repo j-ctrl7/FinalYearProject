@@ -1,5 +1,5 @@
 //function to view the map
-let infoWindow, map;
+let map, infoWindow, marker;
 function initMap(){
    var options = {
     zoom: 15,
@@ -9,13 +9,17 @@ function initMap(){
     disableDefaultUI: true,
   }
   map = new google.maps.Map(document.getElementById('map'), options);
-  initAutocomplete(map);
+  initAutocomplete(map, "pac-input");
+  initAutocomplete(map, "pac-input2");
   infoWindow = new google.maps.InfoWindow();
+  const geocoder = new google.maps.Geocoder();
 
    //add tags
    google.maps.event.addListener(map, 'click', 
    function(event){
     addMarker({coords: event.latLng})
+    geocodeLatLng(geocoder, map, event.latLng);
+    //checkTag(map, event.latLng);
    });
 
    //get user current location
@@ -45,10 +49,70 @@ function initMap(){
 
 }
 
+//get location name from latlng coordinates
+function geocodeLatLng(geocoder, map, position) {
+
+  geocoder
+    .geocode({ location: position })
+    .then((response) => {
+      if (response.results[0]) {
+        //map.setZoom(11);
+        document.getElementById("location-name").innerHTML = response.results[0].address_components[2].short_name;
+        /*
+        const marker = new google.maps.Marker({
+          position: latlng,
+          map: map,
+        });
+
+        infowindow.setContent(response.results[0].formatted_address);
+        infowindow.open(map, marker);*/
+
+      } else {
+        window.alert("No results found");
+      }
+    })
+    .catch((e) => window.alert("Geocoder failed due to: " + e));
+}
+
+//function to determine tags for locations
+function checkTag(map, location, pin){
+  document.getElementById('favorite').addEventListener("click", e => {
+    e.preventDefault();
+    const image = "https://img.icons8.com/tiny-color/25/hearts.png";
+    pin.setIcon(image);
+    pin.setTitle("favorite");
+    //marker.setStyle({});
+    var tag = new Tag(map, location);
+    setTag("favorite");
+  });
+
+  document.getElementById('been').addEventListener("click", e => {
+    e.preventDefault();
+    const image = "https://img.icons8.com/fluency/25/checkmark.png";
+    pin.setIcon(image);
+    pin.setTitle("been");
+    //marker.setStyle({});
+    var tag = new Tag(map, location);
+    setTag("been");
+  });
+
+  document.getElementById('want-to').addEventListener("click", e => {
+    e.preventDefault();
+    const image = "https://img.icons8.com/fluency/25/star.png";
+    pin.setIcon(image);
+    pin.setTitle("want-to");
+    //marker.setStyle({});
+    var tag = new Tag(map, location);
+    setTag("want-to");
+  });
+}
+
+
 //function for searchbox and search autocomplete
-function initAutocomplete(map) {
+function initAutocomplete(map, id) {
+  
     // Create the search box and link it to the UI element.
-    const input = document.getElementById("pac-input");
+    const input = document.getElementById(id);
     const searchBox = new google.maps.places.SearchBox(input);
   
    //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
@@ -124,12 +188,72 @@ function initAutocomplete(map) {
     infoWindow.open(map);
   }
 
+  //add a marker to the map
 function addMarker(props){
-  var marker = new google.maps.Marker({
+  /*
+  marker = new google.maps.Marker({
     position: props.coords,
     map,
   });
+  marker.setPosition(props.coords);*/
+  
+  if(marker == null || marker.getTitle() != null){
+    marker = new google.maps.Marker({
+      position: props.coords,
+      map,
+    });
+  } else {
+    marker.setPosition(props.coords);
+  }
+  
+
+  //pop up box operations
+  const modal = document.getElementById('modal');
+  const closeButton = document.getElementById('close');
+  modal.classList.add('active');
+  document.getElementById('close').addEventListener("click", e => {
+    e.preventDefault();
+    modal.classList.remove('active');
+  });
+  
+  checkTag(map, props.coords, marker);
 }
+
+//for some button clicking events
+document.addEventListener("DOMContentLoaded", () => {
+  const sideMenu = document.getElementById('main-menu');
+  const tagsMenu = document.getElementById('tags');
+
+  document.getElementById('tag').addEventListener("click", e => {
+      e.preventDefault();
+      sideMenu.classList.add("menu--hidden");
+      tagsMenu.classList.remove("menu--hidden");
+  });
+
+  document.getElementById('home').addEventListener("click", e => {
+      e.preventDefault();
+      sideMenu.classList.remove("menu--hidden");
+      tagsMenu.classList.add("menu--hidden");
+  });
+
+  document.getElementById('back').addEventListener("click", e => {
+    e.preventDefault();
+    //if(sideMenu.classList.contains("menu--hidden") && !tagsMenu.classList.contains("menu--hidden")){
+    tagsMenu.classList.add("menu--hidden");
+    sideMenu.classList.remove("menu--hidden");
+});
+
+document.getElementById('close').addEventListener("click", e => {
+  e.preventDefault();
+  //if(sideMenu.classList.contains("menu--hidden") && !tagsMenu.classList.contains("menu--hidden")){
+  tagsMenu.classList.add("menu--hidden");
+  sideMenu.classList.remove("menu--hidden");
+});
+
+  loginForm.addEventListener("submit", e => {
+      e.preventDefault();
+  });
+});
 
 
 //customize the style of the map

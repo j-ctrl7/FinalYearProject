@@ -5,6 +5,7 @@
     box-sizing: border-box;
     list-style: none;
     text-decoration: none;
+    transition: all 200ms ease-in-out;
 }
 
 body{
@@ -17,7 +18,7 @@ body{
     width:100vw;
 }
 
-#pac-input{
+.box{
     border: none;
     height: 16px;
     width: 167px;
@@ -25,11 +26,12 @@ body{
     margin-left: 30px;
 }
 
-#pac-input:focus {
+.box:focus {
     outline: none;
 }
 
-.circle{
+.profile .circle{
+    cursor: pointer;
     height: 50px;
     width: 50px;
     background-color:#4356FF;
@@ -42,12 +44,12 @@ body{
     transition: all 300ms ease-in-out;
 }
 
-.circle:hover{
+.profile .circle:hover{
     background-color: #fff;
     color: #4356FF;
 }
 
-.circle:active{
+.profile .circle:active{
     background-color: darkgray;
     color: #808080;
 }
@@ -58,8 +60,37 @@ body{
     margin-left: 17px;
 }
 
+.back-button .circle{
+    cursor: pointer;
+    height: 35px;
+    width: 35px;
+    color:#4356FF;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+    position: absolute;
+    border-radius: 35px;
+    left: 10px;
+    top: 10px;
+    background-color: #fff;
+    transition: all 300ms ease-in-out;
+}
+
+.back-button .circle:hover{
+    color: #fff;
+    background-color: #4356FF;
+}
+
+.back-button .circle:active{
+    background-color: darkgray;
+    color: #808080;
+}
+
+.back-button a .circle i{
+    margin-top: 11px;
+    margin-left: 1px;
+}
+
 .controls{
-    margin-top: 80px;
+    margin-top: 120px;
     margin-left: 25px;
     background-color: #fff;
     height: 22px;
@@ -93,6 +124,7 @@ nav{
 }
 
 nav ul{
+    cursor: pointer;
     display: inline-block; 
 	text-align: left;
     font-size: small;
@@ -126,12 +158,96 @@ nav ul li a .fa-solid{
     width: 25px;
 }
 
+.modal{
+    position: fixed;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    border-radius: 24px;
+    background-color:#4356FF;
+    z-index: 10;
+    width: 250px;
+    max-width: 80%;
+    color: #fff;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.25);
+    transition: all 300ms ease-in-out;
+}
+
+.modal.active{
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-header{
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header .title{
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.modal-header .close-button{
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: white;
+}
+
+.modal-body{
+    padding: 10px 15px;
+}
+
+.button-container{
+    padding: 10px 15px;
+    margin-left: 35px
+}
+
+.tag-button{
+    color: #fff;
+    margin: 10px 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+    background-color:#001eb7;
+    padding: 6px;
+    outline: none;
+    transition: all 300ms ease-in-out;
+}
+
+.tag-button:hover{
+    color:#001eb7;
+    background-color: #fff;
+}
+
+.tag-button:active{
+    background-color: darkgray;
+    color: #808080;
+}
+
 @media only screen and (max-width: 1200px){
 
 }
 
 @media only screen and (min-height: 720px){
 
+}
+
+
+
+/*--------------------------- Tags -----------------------------------*/
+#menu--title{
+    justify-content: center;
+    margin-top: 50px;
+    color: #fff;
+    
 }
 
 
@@ -160,6 +276,10 @@ h1{
 }
 
 .form--hidden{
+    display: none;
+}
+
+.menu--hidden{
     display: none;
 }
 
