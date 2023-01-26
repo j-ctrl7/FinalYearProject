@@ -1,5 +1,6 @@
 //function to view the map
-let map, infoWindow, marker;
+let map, infoWindow;//, marker;
+let mapMarkers = [];
 function initMap(){
    var options = {
     zoom: 15,
@@ -74,40 +75,6 @@ function geocodeLatLng(geocoder, map, position) {
     .catch((e) => window.alert("Geocoder failed due to: " + e));
 }
 
-//function to determine tags for locations
-function checkTag(map, location, pin){
-  document.getElementById('favorite').addEventListener("click", e => {
-    e.preventDefault();
-    const image = "https://img.icons8.com/tiny-color/25/hearts.png";
-    pin.setIcon(image);
-    pin.setTitle("favorite");
-    //marker.setStyle({});
-    var tag = new Tag(map, location);
-    setTag("favorite");
-  });
-
-  document.getElementById('been').addEventListener("click", e => {
-    e.preventDefault();
-    const image = "https://img.icons8.com/fluency/25/checkmark.png";
-    pin.setIcon(image);
-    pin.setTitle("been");
-    //marker.setStyle({});
-    var tag = new Tag(map, location);
-    setTag("been");
-  });
-
-  document.getElementById('want-to').addEventListener("click", e => {
-    e.preventDefault();
-    const image = "https://img.icons8.com/fluency/25/star.png";
-    pin.setIcon(image);
-    pin.setTitle("want-to");
-    //marker.setStyle({});
-    var tag = new Tag(map, location);
-    setTag("want-to");
-  });
-}
-
-
 //function for searchbox and search autocomplete
 function initAutocomplete(map, id) {
   
@@ -133,8 +100,8 @@ function initAutocomplete(map, id) {
       }
   
       // Clear out the old markers.
-      markers.forEach((marker) => {
-        marker.setMap(null);
+      markers.forEach((searchMarker) => {
+        searchMarker.setMap(null);
       });
       markers = [];
   
@@ -196,16 +163,13 @@ function addMarker(props){
     map,
   });
   marker.setPosition(props.coords);*/
-  
-  if(marker == null || marker.getTitle() != null){
-    marker = new google.maps.Marker({
-      position: props.coords,
-      map,
-    });
-  } else {
-    marker.setPosition(props.coords);
-  }
-  
+  let mapMarker;
+  mapMarker = new google.maps.Marker({
+    position: props.coords,
+    map,
+  });
+
+  mapMarkers.push(mapMarker);
 
   //pop up box operations
   const modal = document.getElementById('modal');
@@ -215,9 +179,46 @@ function addMarker(props){
     e.preventDefault();
     modal.classList.remove('active');
   });
+
+  //check if tag has been applied
+  checkTag(map, props.coords, mapMarkers);
   
-  checkTag(map, props.coords, marker);
 }
+
+
+//function to determine tags for locations
+function checkTag(map, location, pins){
+  document.getElementById('favorite').addEventListener("click", e => {
+    e.preventDefault();
+    const image = "https://img.icons8.com/tiny-color/25/hearts.png";
+    pins[pins.length-1].setIcon(image);
+    pins[pins.length-1].setTitle("favorite");
+    //marker.setStyle({});
+    var tag = new Tag(map, location);
+    setTag("favorite");
+  });
+
+  document.getElementById('been').addEventListener("click", e => {
+    e.preventDefault();
+    const image = "https://img.icons8.com/fluency/25/checkmark.png";
+    pins[pins.length-1].setIcon(image);
+    pins[pins.length-1].setTitle("been");
+    //marker.setStyle({});
+    var tag = new Tag(map, location);
+    setTag("been");
+  });
+
+  document.getElementById('want-to').addEventListener("click", e => {
+    e.preventDefault();
+    const image = "https://img.icons8.com/fluency/25/star.png";
+    pins[pins.length-1].setIcon(image);
+    pins[pins.length-1].setTitle("want-to");
+    //marker.setStyle({});
+    var tag = new Tag(map, location);
+    setTag("want-to");
+  });
+}
+
 
 //for some button clicking events
 document.addEventListener("DOMContentLoaded", () => {
