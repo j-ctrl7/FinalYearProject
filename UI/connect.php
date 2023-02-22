@@ -15,4 +15,6 @@
 		echo "<p><strong>Password: </strong>".$_POST["password"]."</p>";
 		echo "<p><strong>Username: </strong>".$_POST["username"]."</p>";
 	}
+
+	//php test from wamp server
 ?>
