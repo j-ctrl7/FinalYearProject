@@ -186,6 +186,32 @@ function addMarker(props){
 }
 
 
+function getFile(){
+  let input = document.createElement('input');
+  input.type = 'file';
+  input.onchange = _ => {
+    // you can use this method to get file and perform respective operations
+            let files =   Array.from(input.files);
+            console.log(files);
+        };
+  input.click();
+ }
+
+ function loadKML(){
+  var src = 'Joseph A.kml';
+  var kmlLayer = new google.maps.KmlLayer(src, {
+    suppressInfoWindows: true,
+    preserveViewport: false,
+    map: map
+  });
+  kmlLayer.addListener('click', function(event) {
+    var content = event.featureData.infoWindowHtml;
+    var testimonial = document.getElementById('capture');
+    testimonial.innerHTML = content;
+  });
+ }
+
+
 //function to determine tags for locations
 function checkTag(map, location, pins){
   document.getElementById('favorite').addEventListener("click", e => {
@@ -224,36 +250,51 @@ function checkTag(map, location, pins){
 document.addEventListener("DOMContentLoaded", () => {
   const sideMenu = document.getElementById('main-menu');
   const tagsMenu = document.getElementById('tags');
+  const settingsMenu = document.getElementById('settings');
+
 
   document.getElementById('tag').addEventListener("click", e => {
       e.preventDefault();
       sideMenu.classList.add("menu--hidden");
       tagsMenu.classList.remove("menu--hidden");
+      currentMenu = tagsMenu;
   });
 
   document.getElementById('home').addEventListener("click", e => {
       e.preventDefault();
       sideMenu.classList.remove("menu--hidden");
       tagsMenu.classList.add("menu--hidden");
+      currentMenu = sideMenu;
   });
 
-  document.getElementById('back').addEventListener("click", e => {
+  document.getElementById('setting').addEventListener("click", e => {
+    e.preventDefault();
+    settingsMenu.classList.remove("menu--hidden");
+    sideMenu.classList.add("menu--hidden");
+    currentMenu = settingsMenu;
+  });
+
+  document.getElementById('close').addEventListener("click", e => {
     e.preventDefault();
     //if(sideMenu.classList.contains("menu--hidden") && !tagsMenu.classList.contains("menu--hidden")){
     tagsMenu.classList.add("menu--hidden");
     sideMenu.classList.remove("menu--hidden");
-});
+  });
 
-document.getElementById('close').addEventListener("click", e => {
-  e.preventDefault();
-  //if(sideMenu.classList.contains("menu--hidden") && !tagsMenu.classList.contains("menu--hidden")){
-  tagsMenu.classList.add("menu--hidden");
-  sideMenu.classList.remove("menu--hidden");
-});
-
+  var backElements = document.getElementsByClassName("back");
+  for (var i = 0; i < backElements.length; i++) {
+    backElements[i].addEventListener("click", e => {
+      e.preventDefault();
+      //if(sideMenu.classList.contains("menu--hidden") && !tagsMenu.classList.contains("menu--hidden")){
+      tagsMenu.classList.add("menu--hidden");
+      settingsMenu.classList.add("menu--hidden");
+      sideMenu.classList.remove("menu--hidden");
+    });
+  }
+/*
   loginForm.addEventListener("submit", e => {
       e.preventDefault();
-  });
+  });*/
 });
 
 

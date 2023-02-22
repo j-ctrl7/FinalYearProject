@@ -38,14 +38,14 @@
           <li><a id = "home"><i class="fa-solid fa-house"></i>Home</a></li>
           <li><a id = "tag"><i class="fa-solid fa-location-dot"></i>Tags</a></li>
           <li><a href="#"><i class="fa-solid fa-compass"></i>Explore</a></li>
-          <li><a href="#"><i class="fa-solid fa-gear"></i>Settings</a></li>
+          <li><a id = "setting"><i class="fa-solid fa-gear"></i>Settings</a></li>
         </ul>
       </nav>
     </div>
 
     <div class="side-menu menu--hidden" id="tags">
       <div class="back-button">
-        <a href="#" id="back"><div class="circle">
+        <a href="#" class="back"><div class="circle">
           <i class="fa-solid fa-arrow-left"></i>
         </div></a>
       </div>
@@ -68,6 +68,30 @@
       </nav>
     </div> 
 
+    <div class="side-menu menu--hidden" id="settings">
+      <div class="back-button">
+        <a href="#" class = "back"><div class="circle">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div></a>
+      </div>
+      <!--<h1 id="menu--title">Tags</h1>-->
+      <div class="controls">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input
+        id="pac-input2"
+        class="box"
+        type="search"
+        placeholder="Search Location..."/>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#"><i class="fa-solid fa-user"></i>Edit Profile</a></li>
+          <li><a onclick="loadKML()"><i class="fa-sharp fa-solid fa-map-location-dot"></i>Add Map</a></li>
+          <li><a href="#"><i class="fa-solid fa-right-from-bracket"></i>Log Out</a></li>
+        </ul>
+      </nav>
+    </div> 
+
     <div class="modal" id="modal">
       <div class="modal-header">
         <div class="title" id="location-name">Location Name</div>
@@ -81,9 +105,6 @@
       </div>
     </div>
     <script src="UI/script.js"></script>
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDeTskxSeY3YIR0Uvr0Q8rZFLmlN9_XTw0&callback=initMap&libraries=places"
-      defer
-    ></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDeTskxSeY3YIR0Uvr0Q8rZFLmlN9_XTw0&callback=initMap&libraries=places" defer></script>
 </body>
 </html>

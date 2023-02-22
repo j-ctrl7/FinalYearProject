@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+        <Document>
+            <name>Joseph A's travelmap</name>
+            <description>I have been to 3 places</description>
+            <Placemark>
+                <name>Canada, Toronto</name>
+                <ExtendedData>
+                    <Data name="name">
+                        <value>Canada, Toronto</value>
+                    </Data>
+                    <Data name="flags">
+                        <value>want</value>
+                    </Data>
+                </ExtendedData>
+                <Point>
+                    <coordinates>-79.38554,43.64381</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Canada, Quebec City</name>
+                <ExtendedData>
+                    <Data name="name">
+                        <value>Canada, Quebec City</value>
+                    </Data>
+                    <Data name="flags">
+                        <value>been</value>
+                    </Data>
+                </ExtendedData>
+                <Point>
+                    <coordinates>-71.2126,46.81336</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Canada, Ottawa</name>
+                <ExtendedData>
+                    <Data name="name">
+                        <value>Canada, Ottawa</value>
+                    </Data>
+                    <Data name="flags">
+                        <value>been</value>
+                    </Data>
+                </ExtendedData>
+                <Point>
+                    <coordinates>-75.695625,45.422794</coordinates>
+                </Point>
+            </Placemark>
+        </Document>
+    </kml>
