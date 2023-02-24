@@ -11,6 +11,7 @@
 	if (mysqli_connect_errno()){
 		die("Connection error: " . mysqli_connect_error());
 	}
+	echo "Database Connected Successfully";
 
 	return $conn;
 ?>
