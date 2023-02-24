@@ -25,7 +25,4 @@ document.addEventListener("DOMContentLoaded", () => {
         createAccountForm.classList.add("form--hidden");
     });
 
-    loginForm.addEventListener("submit", e => {
-        e.preventDefault();
-    });
 });

@@ -13,7 +13,7 @@
 </head>
 <body class="login-body">
     <div class="login-area">
-        <form class="form" id="login" action="connect.php" method="post">
+        <form class="form" id="login" action="../Php_Scripts/login.php" method="post">
             <h1 class="form__title">Login</h1>
             <div class="form__message form__message--error"></div>
             <div class="form__input-group">
@@ -33,7 +33,7 @@
             </p>
         </form>
         
-        <form class="form form--hidden" id="createAccount" action="connect.php" method="post">
+        <form class="form form--hidden" id="createAccount" action="../Php_Scripts/signUp.php" method="post">
             <h1 class="form__title">Create Account</h1>
             <div class="form__message form__message--error"></div>
             <div class="form__input-group">
@@ -49,7 +49,7 @@
                 <div class="form__input-error-message"></div>
             </div>
             <div class="form__input-group">
-                <input type="password" class="form__input" autofocus placeholder="Confirm password">
+                <input type="password" class="form__input" autofocus placeholder="Confirm password" name="password_confirmation">
                 <div class="form__input-error-message"></div>
             </div>
             <button class="form__button" type="submit">Sign Up</button>
