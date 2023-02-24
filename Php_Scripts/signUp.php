@@ -30,6 +30,7 @@
     }
 
     //space for password hashing...will be complete after database is fully connected
+    
 
 
     $conn = require __DIR__ . "/connect.php";
@@ -40,11 +41,10 @@
 
     if(! mysqli_stmt_prepare($stmt, $sql)){
         die("SQL error: " . mysqli_error($conn));
+    }else{
+        mysqli_stmt_bind_param($stmt, 'sss', $name, $email, $pword);
+        mysqli_stmt_execute($stmt);
     }
-
-    mysqli_stmt_bind_param($stmt, 'sss', $name, $email, $pword);
-
-    mysqli_stmt_execute($stmt);
     
     //Displaying data on php page (for testing)
 
