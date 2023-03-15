@@ -12,12 +12,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 </head>
 <body>
+
+	<?php
+		session_start();
+	?>
+	
     <div id="map"></div>
-    <div class="profile">
-      <a href="UI/login.html"><div class="circle">
-        <i class="fa-regular fa-user"></i>
-      </div></a>
-    </div>
+	<div class="profile">
+		<a href="UI/login.html"><div class="circle">
+		<i class="fa-regular fa-user"></i>
+	</div></a>
+	</div>
     <div class="side-menu" id="main-menu">
       <!--<div class="back-button">
         <a href="#" class="back"><div class="circle">
@@ -87,7 +92,7 @@
         <ul>
           <li><a href="#"><i class="fa-solid fa-user"></i>Edit Profile</a></li>
           <li><a onclick="loadKML()"><i class="fa-sharp fa-solid fa-map-location-dot"></i>Add Map</a></li>
-          <li><a href="#"><i class="fa-solid fa-right-from-bracket"></i>Log Out</a></li>
+          <li><a href="Php_Scripts/Logout.php"><i class="fa-solid fa-right-from-bracket"></i>Log Out</a></li>
         </ul>
       </nav>
     </div> 
