@@ -1,5 +1,5 @@
 //function to view the map
-let map, infoWindow;//, marker;
+let map, infoWindow, mapMarker;//, marker;
 let mapMarkers = [];
 function initMap(){
    var options = {
@@ -10,6 +10,11 @@ function initMap(){
     disableDefaultUI: true,
   }
   map = new google.maps.Map(document.getElementById('map'), options);
+  generalSetup(map);
+
+}
+
+function generalSetup(map){
   initAutocomplete(map, "pac-input");
   initAutocomplete(map, "pac-input2");
   infoWindow = new google.maps.InfoWindow();
@@ -59,14 +64,6 @@ function geocodeLatLng(geocoder, map, position) {
       if (response.results[0]) {
         //map.setZoom(11);
         document.getElementById("location-name").innerHTML = response.results[0].address_components[2].short_name;
-        /*
-        const marker = new google.maps.Marker({
-          position: latlng,
-          map: map,
-        });
-
-        infowindow.setContent(response.results[0].formatted_address);
-        infowindow.open(map, marker);*/
 
       } else {
         window.alert("No results found");
@@ -157,17 +154,16 @@ function initAutocomplete(map, id) {
 
   //add a marker to the map
 function addMarker(props){
-  /*
-  marker = new google.maps.Marker({
-    position: props.coords,
-    map,
-  });
-  marker.setPosition(props.coords);*/
-  let mapMarker;
-  mapMarker = new google.maps.Marker({
-    position: props.coords,
-    map,
-  });
+  if(mapMarker == null || mapMarker.getTitle() != null){
+    mapMarker = new google.maps.Marker({
+      position: props.coords,
+      map,
+    });
+  } else {
+    mapMarker.setPosition(props.coords);
+  }
+
+  //mapMarker.setPosition(props.coords);
 
   mapMarkers.push(mapMarker);
 
@@ -185,33 +181,6 @@ function addMarker(props){
   
 }
 
-
-function getFile(){
-  let input = document.createElement('input');
-  input.type = 'file';
-  input.onchange = _ => {
-    // you can use this method to get file and perform respective operations
-            let files =   Array.from(input.files);
-            console.log(files);
-        };
-  input.click();
- }
-
- function loadKML(){
-  var src = 'Joseph A.kml';
-  var kmlLayer = new google.maps.KmlLayer(src, {
-    suppressInfoWindows: true,
-    preserveViewport: false,
-    map: map
-  });
-  kmlLayer.addListener('click', function(event) {
-    var content = event.featureData.infoWindowHtml;
-    var testimonial = document.getElementById('capture');
-    testimonial.innerHTML = content;
-  });
- }
-
-
 //function to determine tags for locations
 function checkTag(map, location, pins){
   document.getElementById('favorite').addEventListener("click", e => {
@@ -220,8 +189,8 @@ function checkTag(map, location, pins){
     pins[pins.length-1].setIcon(image);
     pins[pins.length-1].setTitle("favorite");
     //marker.setStyle({});
-    var tag = new Tag(map, location);
-    setTag("favorite");
+    //var tag = new Tag(map, location);
+   // setTag("favorite");
   });
 
   document.getElementById('been').addEventListener("click", e => {
@@ -230,8 +199,8 @@ function checkTag(map, location, pins){
     pins[pins.length-1].setIcon(image);
     pins[pins.length-1].setTitle("been");
     //marker.setStyle({});
-    var tag = new Tag(map, location);
-    setTag("been");
+    //var tag = new Tag(map, location);
+    //setTag("been");
   });
 
   document.getElementById('want-to').addEventListener("click", e => {
@@ -240,9 +209,95 @@ function checkTag(map, location, pins){
     pins[pins.length-1].setIcon(image);
     pins[pins.length-1].setTitle("want-to");
     //marker.setStyle({});
-    var tag = new Tag(map, location);
-    setTag("want-to");
+    //var tag = new Tag(map, location);
+    //setTag("want-to");
   });
+}
+
+//this fuction selects a KML file from a user's local computer
+function getFile(){
+  let input = document.createElement('input');
+  input.type = 'file';
+  input.onchange = _ => {
+    // you can use this method to get file and perform respective operations
+    let files =   Array.from(input.files);
+    let reader = new FileReader();
+    reader.onload = async (e)=>{
+      let result = e.target.result;//await this.extractGoogleCoords(e.target.result);
+      extractGoogleCoords(result);
+      console.log(result);
+    }
+    reader.readAsText(files[0]);
+            
+  };
+  input.click();
+ }
+
+
+ //this function extracts the tagged coordinates as well as the tag from the KML file
+ function extractGoogleCoords(text){
+  let parser = new DOMParser();
+  let xmlDoc = parser.parseFromString(text, "text/xml");
+  let googleMarkers = [];
+  let tags = [];
+  let locations = [];
+
+  if(xmlDoc.documentElement.nodeName == "kml"){
+    for (const item of xmlDoc.getElementsByTagName('Placemark')){
+      let placeMarkName = item.getElementsByTagName('name')[0].childNodes[0].nodeValue.trim();
+      let markers = item.getElementsByTagName('Point');
+      let extendedData = item.getElementsByTagName('ExtendedData')[0].getElementsByTagName('Data');
+      //console.log(extendedData);
+      
+      for (const marker of markers) {
+        var coords = marker.getElementsByTagName('coordinates')[0].childNodes[0].nodeValue.trim();
+        let coord = coords.split(",");
+        googleMarkers.push({ lat: +coord[1], lng: +coord[0] });
+       // console.log(googleMarkers);
+      }
+
+      
+      for (const data of extendedData) {
+        var exData = data.getElementsByTagName('value')[0].childNodes[0].nodeValue.trim();
+        var tag = data.attributes[0].nodeValue;
+        if(tag == 'flags'){
+          tags.push(exData);
+        }
+       // console.log(tags)
+      }
+    }
+    locations = combineArrays(googleMarkers, tags);
+    setKMLMap(locations);
+    console.log(locations);
+  }
+}
+
+//this function sets up the new map loaded from the KML file
+function setKMLMap(locations){
+  var options = {
+    zoom: 10,
+    center:{ lat: 43.64381, lng: -79.38554 },
+    //style map(may add night mode sometime)
+    disableDefaultUI: true,
+  }
+  map = new google.maps.Map(document.getElementById('map'), options);
+  for (var i = 0; i < locations.length; i++) {  
+    marker = new google.maps.Marker({
+      position: locations[i][0],
+      map: map
+    });
+
+    if(locations[i][1] == "want"){
+      marker.setIcon("https://img.icons8.com/fluency/25/star.png");
+    };
+    if(locations[i][1] == "been"){
+      marker.setIcon("https://img.icons8.com/fluency/25/checkmark.png");
+    };
+    if(locations[i][1] == "favorite"){
+      marker.setIcon("https://img.icons8.com/tiny-color/25/hearts.png");
+    };
+  }
+  generalSetup(map);
 }
 
 
@@ -251,6 +306,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const sideMenu = document.getElementById('main-menu');
   const tagsMenu = document.getElementById('tags');
   const settingsMenu = document.getElementById('settings');
+  const btnHamburger = document.querySelector('#btnHamburger'); 
+  const hamburger = document.querySelector('.hamburger');
+  const fadeElems = document.querySelectorAll('.has-fade');
 
 
   document.getElementById('tag').addEventListener("click", e => {
@@ -291,11 +349,42 @@ document.addEventListener("DOMContentLoaded", () => {
       sideMenu.classList.remove("menu--hidden");
     });
   }
+
+  btnHamburger.addEventListener('click', function(){
+    if(hamburger.classList.contains('open')){// close menu
+        hamburger.classList.remove('open');
+        fadeElems.forEach(function(element){
+          element.classList.add('fade-out');
+          element.classList.remove('fade-in');
+        });
+    }
+    else{//open menu
+        hamburger.classList.add('open');
+        fadeElems.forEach(function(element){
+          element.classList.add('fade-in');
+          element.classList.remove('fade-out');
+      });
+    }
+});
 /*
   loginForm.addEventListener("submit", e => {
       e.preventDefault();
   });*/
 });
+
+function combineArrays(arr1, arr2){
+  let combinedArray = [];
+  for(let i = 0; i < arr1.length; i++){
+    for(let j = 0; j < arr2.length; j++){
+      if(i==j){
+        //console.log(i, j)
+        combinedArray.push([arr1[i], arr2[j]]);
+      }
+    }
+  }
+  return combinedArray;
+}
+
 
 
 //customize the style of the map
@@ -394,4 +483,3 @@ function setStyle(type){
 }
 
   window.initMap = initMap;
-  

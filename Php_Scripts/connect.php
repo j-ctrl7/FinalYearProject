@@ -14,4 +14,6 @@
 	echo "Database Connected Successfully";
 
 	return $conn;
+
+	$conn->close();
 ?>
