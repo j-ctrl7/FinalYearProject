@@ -49,8 +49,5 @@
     //Displaying data on php page (for testing)
 
     //print_r($_POST);
-    echo "Sign Up Successful";
-
-    $conn -> close();
 
 ?>
