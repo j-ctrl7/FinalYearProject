@@ -49,5 +49,4 @@
     //Displaying data on php page (for testing)
 
     //print_r($_POST);
-
 ?>
