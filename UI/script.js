@@ -277,6 +277,7 @@ function setKMLMap(locations){
   var options = {
     zoom: 10,
     center:{ lat: 43.64381, lng: -79.38554 },
+    styles: setStyle("lightMode"),
     //style map(may add night mode sometime)
     disableDefaultUI: true,
   }
