@@ -30,7 +30,8 @@
     }
 
     //space for password hashing...will be complete after database is fully connected
-	$encrypted_password = password_hash($pword, PASSWORD_DEFAULT);
+    
+
 
     $conn = require __DIR__ . "/connect.php";
 
@@ -40,18 +41,17 @@
 
     if(! mysqli_stmt_prepare($stmt, $sql)){
         die("SQL error: " . mysqli_error($conn));
+    }else{
+        mysqli_stmt_bind_param($stmt, 'sss', $name, $email, $pword);
+        mysqli_stmt_execute($stmt);
     }
-        
-	mysqli_stmt_bind_param($stmt, 'sss', $name, $email, $encrypted_password);
     
-    if (mysqli_stmt_execute($stmt)){
-		header("Location: ../UI/signUp_successful.html");
-		exit;
-	}else {
-		die($conn->error . "" . $conn->errno);
-	}   
-	
     //Displaying data on php page (for testing)
+
     //print_r($_POST);
-    
+    echo "Sign Up Successful";
+
+    $conn -> close();
+    header("Location: ../index.html");
+
 ?>
