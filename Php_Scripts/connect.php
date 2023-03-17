@@ -12,4 +12,6 @@
 		die("Connection error: " . mysqli_connect_error());
 	}
 	return $conn;
+
+	$conn->close();
 ?>
