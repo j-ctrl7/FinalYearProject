@@ -26,8 +26,8 @@
 				
 				header("Location: ../index.html");
 			}else {
+                header("Location: ..UI/login.html");
 				die("Invalid login");
-                //header("Location: ../index.html");
 			}
 		} else {
 			die("This email address does not match any account.");
